@@ -1,5 +1,5 @@
-import 'package:GuiaTurismo/services/auth_service.dart';
-import 'package:GuiaTurismo/services/session_service.dart';
+import 'package:guia_turismo/services/auth_service.dart';
+import 'package:guia_turismo/services/session_service.dart';
 import 'package:flutter/foundation.dart';
 
 class AuthController extends ChangeNotifier {
