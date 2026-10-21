@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:guiaapp/controller/camera_controller.dart';
+import 'package:guia_turismo/controller/camera_controller.dart';
 import 'package:provider/provider.dart';
 
 class CadastroLugar extends StatefulWidget {
@@ -14,75 +14,73 @@ class _CadastroLugarState extends State<CadastroLugar> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Consumer<CameraController>(
-        builder: (context, controle, _) => Column(
+        builder: (context, controleCamera, _) => Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Stack(
               children: [
                 Container(
-                  // primeiro widget é o fundo
                   height: 300,
-                  color: Theme.of(context).colorScheme.primaryContainer,
                   decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primaryContainer,
                     border: Border.all(width: 2),
                     borderRadius: BorderRadius.circular(16),
-                    image: exibirImagem(controle),                   
+                    image: exibirImagem(controleCamera)
                   ),
                 ),
                 Positioned(
                   bottom: 8,
                   right: 8,
                   child: IconButton(
-                    onPressed: () => controle.abrirCamera(),
-                    icon: Icon(Icons.camera_alt_rounded),
-                    ),
-                  ),
+                    onPressed: () => controleCamera.abrirCamera(),
+                    icon: Icon(Icons.camera_alt_rounded)
+                  ) 
+                ),
               ],
-            ),
+            )  
           ],
         ),
-      ),
+        ),
     );
   }
 }
 
-DecorationImage exibirImagem (CameraController controle) {
-  if(controle.imagemSelecionada == null) {
-    return DecorationImage(image: NetworkImage('https://placehold.jp/150x150.png'));
+
+DecorationImage exibirImagem(CameraController controleCamera){
+  if (controleCamera.imagemSelecionada == null){
+    return DecorationImage(image: NetworkImage('https://placehold.co/150x150.png', scale: 1.0));
   } else {
-    return DecorationImage(
-      image: FileImage(controle.imagemSelecionada!),
-      fit: BoxFit.cover
-      );
+    return DecorationImage(image: FileImage(controleCamera.imagemSelecionada!),
+    fit: BoxFit.cover
+    );
   }
 }
 
-void abrirModal (CameraController controle, context) {
-  showModalBottomSheet(
-    context: context,
-     builder: (context) => 
-     SafeArea(
+void abrirModal(CameraController controleCamera, context) {
+  showBottomSheet(
+    context: context, 
+    builder: (context) => SafeArea(
       bottom: true,
-      child:  Wrap(
+      child: Wrap(
         alignment: WrapAlignment.center,
         children: [
           ListTile(
             leading: Icon(Icons.camera),
-            onTap: () {
-              controle.abrirCamera();
+            onTap: (){
+              controleCamera.abrirCamera();
               Navigator.pop(context);
             },
           ),
           ListTile(
             leading: Icon(Icons.photo_album),
             onTap: () {
-              controle.abrirGaleria();
+              controleCamera.abrirGaleria();
               Navigator.pop(context);
-            }
+            },
           )
         ],
+      ),
       )
-    )
-  );
+    );
 }

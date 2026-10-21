@@ -1,6 +1,7 @@
 import 'package:guia_turismo/services/auth_service.dart';
-import 'package:guia_turismo/services/session_service.dart';
 import 'package:flutter/foundation.dart';
+import 'package:guia_turismo/services/session_services.dart';
+
 
 class AuthController extends ChangeNotifier {
   int idLogado = 0;

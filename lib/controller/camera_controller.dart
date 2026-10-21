@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:guiaapp/sevices/camera_service.dart';
+import 'package:guia_turismo/services/camera_service.dart';
+
 
 class CameraController extends ChangeNotifier{
   final CameraService _service = CameraService();
