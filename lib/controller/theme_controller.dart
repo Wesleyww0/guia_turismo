@@ -15,12 +15,12 @@ class ThemeController extends ChangeNotifier {
       brightness: brilho,
     );
     return ThemeData(
-      //primarySwatch: Colors.cyan,
+      
       useMaterial3: true,
       colorScheme: cor,
       appBarTheme: defineAppBar(cor),
       bottomNavigationBarTheme: defineNavegacaoBase(cor),
-      //Fazer desses 3 abaixo dps - Barbara faz
+      
       elevatedButtonTheme: defineBotaoElevated(cor),
       iconButtonTheme: IconButtonThemeData(),
       cardTheme: CardThemeData(),
@@ -34,6 +34,6 @@ class ThemeController extends ChangeNotifier {
     _temaAtual = _temaAtual == ThemeMode.light
         ? ThemeMode.dark
         : ThemeMode.light;
-    notifyListeners(); //Avisa a tela que atualizou "eventListener"
+    notifyListeners(); 
   }
 }

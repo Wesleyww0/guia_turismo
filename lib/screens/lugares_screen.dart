@@ -52,11 +52,11 @@ void abrirForm() {
                 label: Text("Categoria")
               ),
               items: [
-                DropdownMenuItem(value: 1, child: Text("Praias")),
-                DropdownMenuItem(value: 2, child: Text("Points")),
-                DropdownMenuItem(value: 3, child: Text("Ilhas")),
-                DropdownMenuItem(value: 4, child: Text("Gastronomia")),
-                DropdownMenuItem(value: 5, child: Text("Dicas")),
+                DropdownMenuItem(value: 1, child: Text("Praças")),
+                DropdownMenuItem(value: 2, child: Text("Portos")),
+                DropdownMenuItem(value: 3, child: Text("Bairros")),
+                DropdownMenuItem(value: 4, child: Text("Shows")),
+                DropdownMenuItem(value: 5, child: Text("Feiras")),
               ],
               //Salva o valor do dropdown
               onChanged: (valor) => _categoriaId = valor!,
