@@ -11,7 +11,7 @@ class ThemeController extends ChangeNotifier {
 
   static ThemeData _mudarTema(Brightness brilho) {
     final cor = ColorScheme.fromSeed(
-      seedColor: Colors.lightBlue,
+      seedColor: Colors.lightGreen,
       brightness: brilho,
     );
     return ThemeData(
