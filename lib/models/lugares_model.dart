@@ -18,7 +18,7 @@ class LugaresModel {
     required this.categoriaId
   });
 
-  //Converter dados json (da api) para Map
+    // Converter dados json (da api) para Map com validação de nulos
   factory LugaresModel.fromJson(Map json) {
     return LugaresModel(
       id: json['id'],
@@ -26,10 +26,12 @@ class LugaresModel {
       latitude: json['latitude'],
       longitude: json['longitude'],
       descricao: json['descricao'],
-      categoria: json['categoria']['nome'] ?? json['categoria']['nome'],
+      // Verifica se 'categoria' não é nulo antes de tentar acessar o 'nome'
+      categoria: json['categoria'] != null ? json['categoria']['nome'] : '',
       categoriaId: json['categoriaId']
     );
   }
+
 
   Map<String, dynamic> toJson() {
     return {

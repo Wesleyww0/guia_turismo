@@ -89,7 +89,7 @@ class _LugaresScreenState extends State<LugaresScreen> {
                 ),
                 const SizedBox(height: 16),
                 DropdownButtonFormField<int>(
-                  value: _categoriaId,
+                  initialValue: _categoriaId,
                   decoration: InputDecoration(
                     labelText: "Categoria",
                     prefixIcon: const Icon(Icons.category_outlined, color: Colors.blueGrey),
