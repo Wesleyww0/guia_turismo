@@ -9,6 +9,11 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
+/*
+    Dados para entrar no sistema
+    email: lilia@teste.com  | Senha: senha123
+  */
+
 class _LoginScreenState extends State<LoginScreen> {
   final _identificador = TextEditingController();
   final _senha = TextEditingController();

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:guia_turismo/controller/theme_controller.dart';
 import 'package:guia_turismo/screens/cadastro_screen.dart';
 import 'package:guia_turismo/screens/lugares_screen.dart';
+import 'package:guia_turismo/screens/mapa_screen.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -27,12 +28,14 @@ class _HomeScreenState extends State<HomeScreen> {
     ),
     const CadastroLugar(),
     const LugaresScreen(),
+    const MapaScreen()
   ];
 
   final List<String> _cabecalho = [
     'Guia de Turismo',
     'Cadastrar Local', // Texto mais claro
-    'Lugares para Visitar'
+    'Lugares para Visitar',
+    'Mapa GPS'
   ];
 
   @override
@@ -65,7 +68,9 @@ class _HomeScreenState extends State<HomeScreen> {
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home_outlined), activeIcon: Icon(Icons.home), label: 'Início'),
           BottomNavigationBarItem(icon: Icon(Icons.camera_alt_outlined), activeIcon: Icon(Icons.camera_alt), label: 'Câmera'),
-          BottomNavigationBarItem(icon: Icon(Icons.place_outlined), activeIcon: Icon(Icons.place), label: 'Locais')
+          BottomNavigationBarItem(icon: Icon(Icons.place_outlined), activeIcon: Icon(Icons.place), label: 'Locais'),
+          BottomNavigationBarItem(icon: Icon(Icons.gps_fixed_outlined), activeIcon: Icon(Icons.gps_fixed), label: 'GPS')
+    
         ],
       ),
     );

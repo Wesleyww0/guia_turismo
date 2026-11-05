@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:guia_turismo/controller/auth_controller.dart';
 import 'package:guia_turismo/controller/camera_controller.dart';
 import 'package:guia_turismo/controller/lugares_controller.dart';
+import 'package:guia_turismo/controller/mapa_controller.dart';
 import 'package:guia_turismo/controller/theme_controller.dart';
 //import 'package:guia_turismo/inicializar.dart';
 import 'package:guia_turismo/screens/cadastro_screen.dart';
 import 'package:guia_turismo/screens/home_screen.dart';
 import 'package:guia_turismo/screens/login_screen.dart';
 import 'package:guia_turismo/screens/lugares_screen.dart';
+import 'package:guia_turismo/screens/mapa_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -29,6 +31,7 @@ class _inicializarState extends State<inicializar> {
       ChangeNotifierProvider(create: (_) => AuthController()),
       ChangeNotifierProvider(create: (_) => ThemeController()),
       ChangeNotifierProvider(create: (_) => CameraController()),
+      ChangeNotifierProvider(create: (_) => MapaController()),
     ],
     child: Consumer<ThemeController>(
       builder: (context, controllerThema, child) => MaterialApp(
@@ -41,7 +44,8 @@ class _inicializarState extends State<inicializar> {
           'login': (context) => LoginScreen(),
           'home': (context) => HomeScreen(),
           'lugares': (context) => LugaresScreen(),
-          'cadastro': (context) => CadastroLugar()
+          'cadastro': (context) => CadastroLugar(),
+          'mapa': (context) => MapaScreen()
         },
       ),
     ),
