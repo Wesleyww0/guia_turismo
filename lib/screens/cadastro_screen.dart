@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:guia_turismo/controller/camera_controller.dart';
+import 'package:guia_turismo/services/buscar_cep_service.dart';
 import 'package:provider/provider.dart';
 
 class CadastroLugar extends StatefulWidget {
@@ -11,6 +12,12 @@ class CadastroLugar extends StatefulWidget {
 
 class _CadastroLugarState extends State<CadastroLugar> {
   @override
+
+  final TextEditingController _cepController = TextEditingController();
+  final TextEditingController _latController = TextEditingController();
+  final TextEditingController _lonController = TextEditingController();
+  
+  bool _buscandoCep = false;
   Widget build(BuildContext context) {
     // Usando o esquema de cores do tema para consistência
     final colorScheme = Theme.of(context).colorScheme;
@@ -60,11 +67,73 @@ class _CadastroLugarState extends State<CadastroLugar> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 24),
-                const Text(
+                 SizedBox(height: 24),
+                 Text(
                   "Tire uma foto do local para cadastrá-lo.",
+                  
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 16, color: Colors.grey),
+                ),
+                 SizedBox(height: 24),
+
+                // Campo de Busca por CEP
+                TextFormField(
+                  controller: _cepController,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    labelText: 'Digite o CEP do local',
+                    prefixIcon: const Icon(Icons.map_outlined),
+                    suffixIcon: _buscandoCep
+                        ?  Padding(
+                            padding: EdgeInsets.all(12.0),
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : IconButton(
+                            icon: const Icon(Icons.search),
+                            onPressed: () async {
+                              if (_cepController.text.isNotEmpty) {
+                                setState(() => _buscandoCep = true);
+                                try {
+                                  // Chama o seu serviço de CEP
+                                  final resultado = await BuscarcepService().buscar(_cepController.text);
+                                  
+                                  if (resultado != null) {
+                                    setState(() {
+                                      _latController.text = resultado['lat'].toString();
+                                      _lonController.text = resultado['lon'].toString();
+                                    });
+                                  }
+                                } catch (e) {
+                                  debugPrint("Erro: $e");
+                                } finally {
+                                  setState(() => _buscandoCep = false);
+                                }
+                              }
+                            },
+                          ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+
+                // Campos de Latitude e Longitude (Preenchidos automaticamente)
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        controller: _latController,
+                        readOnly: true,
+                        decoration: const InputDecoration(labelText: 'Latitude'),
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: TextFormField(
+                        controller: _lonController,
+                        readOnly: true,
+                        decoration: const InputDecoration(labelText: 'Longitude'),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

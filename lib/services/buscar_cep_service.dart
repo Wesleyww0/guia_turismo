@@ -28,17 +28,24 @@ class BuscarcepService {
     if (endereco['erro'] != null) return null; //Cep não existe
     
 
+    // Monta os parâmetros base para o Nominatim
+    final Map<String, String> parametrosNominatim = {
+      'city': endereco['localidade'],
+      'state': endereco['uf'],
+      'country': 'Brasil',
+      'format': 'jsonv2',
+      'limit': '1', //Busca o 1° resultado ou o mais relevante
+    };
+
+    // Só adiciona a rua nos parâmetros se o ViaCEP tiver retornado um logradouro válido
+    if (endereco['logradouro'] != null && endereco['logradouro'].toString().isNotEmpty) {
+      parametrosNominatim['street'] = endereco['logradouro'];
+    }
+
     //Passando para o Nominatim
     final respostaNom = await http.get(Uri.https(
       //Requisição de busca
-      'nominatim.openstreetmap.org', '/search', {
-        'street': endereco['logradouro'],
-        'city': endereco['localidade'],
-        'state': endereco['uf'],
-        'country': 'Brasil',
-        'format': 'jsonv2',
-        'limit': '1', //Busca o 1° resultado ou o mais relevante
-    }),
+      'nominatim.openstreetmap.org', '/search', parametrosNominatim),
     //Precisamos nos identificar para poder fazer a requisição
     headers: _headers,
     );
