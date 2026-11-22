@@ -10,11 +10,11 @@ class MapaController extends ChangeNotifier{
   final MapaService _servico = MapaService();
 
   LatLng? atual;
-
   List<LatLng> pontosNoMapa = [];
   bool carregando = false;
   String erro = "";
 
+// metodo contrutor
   final MapController mapControllerNativo = MapController();
 
   MapaController() {

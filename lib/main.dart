@@ -1,9 +1,11 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:guia_turismo/controller/auth_controller.dart';
 import 'package:guia_turismo/controller/camera_controller.dart';
 import 'package:guia_turismo/controller/lugares_controller.dart';
 import 'package:guia_turismo/controller/mapa_controller.dart';
 import 'package:guia_turismo/controller/theme_controller.dart';
+import 'package:guia_turismo/firebase_options.dart';
 //import 'package:guia_turismo/inicializar.dart';
 import 'package:guia_turismo/screens/cadastro_screen.dart';
 import 'package:guia_turismo/screens/home_screen.dart';
@@ -12,8 +14,14 @@ import 'package:guia_turismo/screens/lugares_screen.dart';
 import 'package:guia_turismo/screens/mapa_screen.dart';
 import 'package:provider/provider.dart';
 
-void main() {
-  runApp(inicializar());
+void main() async {
+ 
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+ 
+  runApp(const inicializar());
 }
 
 class inicializar extends StatefulWidget {
@@ -41,7 +49,7 @@ class _inicializarState extends State<inicializar> {
         themeMode: controllerThema.temaAtual,
         initialRoute: 'login',
         routes: {
-          'login': (context) => LoginScreen(),
+          'login': (context) => TelaLogin(),
           'home': (context) => HomeScreen(),
           'lugares': (context) => LugaresScreen(),
           'cadastro': (context) => CadastroLugar(),

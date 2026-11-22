@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "345510755602",
+    "project_id": "login-39fe8",
+    "storage_bucket": "login-39fe8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:345510755602:android:850fa3343e2c2ce0af07cb",
+        "android_client_info": {
+          "package_name": "com.example.guia_turismo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "345510755602-80apo5hn5idqo2vjf6mlpiokqu4fbhc1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZDe8AtL8vvCsrNaLXihgn6gVj0IsXYUA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "345510755602-80apo5hn5idqo2vjf6mlpiokqu4fbhc1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "345510755602-1uaok49g7g3ni6lak1q2aju06b5sgj5t.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.guiaapp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:345510755602:android:f03c8acfa54b8e3aaf07cb",
+        "android_client_info": {
+          "package_name": "com.example.login"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "345510755602-80apo5hn5idqo2vjf6mlpiokqu4fbhc1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZDe8AtL8vvCsrNaLXihgn6gVj0IsXYUA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "345510755602-80apo5hn5idqo2vjf6mlpiokqu4fbhc1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "345510755602-1uaok49g7g3ni6lak1q2aju06b5sgj5t.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.guiaapp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
