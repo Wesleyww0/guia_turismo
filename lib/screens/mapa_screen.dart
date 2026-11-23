@@ -45,6 +45,7 @@ class _MapaScreenState extends State<MapaScreen> {
                             urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
                             //Informa quem está pedindo para usar o mapa
                             userAgentPackageName: "br.com.guiaturismo.maps",
+                            maxNativeZoom: 19,
                           ),
 
                           /*
