@@ -7,6 +7,8 @@ class MapaController extends ChangeNotifier {
   final MapaService _servico = MapaService();
 
   LatLng? atual;
+  LatLng? destinoSelecionado;
+  String? nomeDestinoSelecionado;
   List<LatLng> pontosNoMapa = [];
   List<LatLng> rotaAtual = [];
   bool carregando = false;
@@ -44,8 +46,10 @@ class MapaController extends ChangeNotifier {
     }
   }
 
-  Future<void> tracarRota(LatLng destino) async {
+  Future<void> tracarRota(LatLng destino, {String? nomeDestino}) async {
     if (atual == null) return;
+    destinoSelecionado = destino;
+    nomeDestinoSelecionado = nomeDestino;
     carregandoRota = true;
     notifyListeners();
 
@@ -59,6 +63,8 @@ class MapaController extends ChangeNotifier {
 
   void limparRota() {
     rotaAtual = [];
+    destinoSelecionado = null;
+    nomeDestinoSelecionado = null;
     notifyListeners();
   }
 
