@@ -12,11 +12,11 @@ class CadastroLugar extends StatefulWidget {
 
 class _CadastroLugarState extends State<CadastroLugar> {
   @override
-
   final TextEditingController _cepController = TextEditingController();
   final TextEditingController _latController = TextEditingController();
   final TextEditingController _lonController = TextEditingController();
-  
+  final TextEditingController _salvarTudo = TextEditingController();
+
   bool _buscandoCep = false;
   Widget build(BuildContext context) {
     // Usando o esquema de cores do tema para consistência
@@ -29,7 +29,8 @@ class _CadastroLugarState extends State<CadastroLugar> {
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(24.0), // Padding padrão do Login
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch, // Estica como no Login
+              crossAxisAlignment:
+                  CrossAxisAlignment.stretch, // Estica como no Login
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Icon(
@@ -38,12 +39,13 @@ class _CadastroLugarState extends State<CadastroLugar> {
                   color: Colors.blueGrey,
                 ),
                 const SizedBox(height: 32),
-                
+
                 // Container da Imagem padronizado
                 Material(
                   elevation: 4, // Sombra consistente com os Cards
                   borderRadius: BorderRadius.circular(16),
-                  clipBehavior: Clip.antiAlias, // Garante que a imagem siga a borda
+                  clipBehavior:
+                      Clip.antiAlias, // Garante que a imagem siga a borda
                   child: Stack(
                     children: [
                       Container(
@@ -61,20 +63,23 @@ class _CadastroLugarState extends State<CadastroLugar> {
                           backgroundColor: Colors.white,
                           elevation: 2,
                           onPressed: () => abrirModal(controleCamera, context),
-                          child: const Icon(Icons.camera_alt_rounded, color: Colors.blueGrey),
+                          child: const Icon(
+                            Icons.camera_alt_rounded,
+                            color: Colors.blueGrey,
+                          ),
                         ),
                       ),
                     ],
                   ),
                 ),
-                 SizedBox(height: 24),
-                 Text(
+                SizedBox(height: 24),
+                Text(
                   "Tire uma foto do local para cadastrá-lo.",
-                  
+
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 16, color: Colors.grey),
                 ),
-                 SizedBox(height: 24),
+                SizedBox(height: 24),
 
                 // Campo de Busca por CEP
                 TextFormField(
@@ -84,7 +89,7 @@ class _CadastroLugarState extends State<CadastroLugar> {
                     labelText: 'Digite o CEP do local',
                     prefixIcon: const Icon(Icons.map_outlined),
                     suffixIcon: _buscandoCep
-                        ?  Padding(
+                        ? Padding(
                             padding: EdgeInsets.all(12.0),
                             child: CircularProgressIndicator(strokeWidth: 2),
                           )
@@ -95,12 +100,15 @@ class _CadastroLugarState extends State<CadastroLugar> {
                                 setState(() => _buscandoCep = true);
                                 try {
                                   // Chama o seu serviço de CEP
-                                  final resultado = await BuscarcepService().buscar(_cepController.text);
-                                  
+                                  final resultado = await BuscarcepService()
+                                      .buscar(_cepController.text);
+
                                   if (resultado != null) {
                                     setState(() {
-                                      _latController.text = resultado['lat'].toString();
-                                      _lonController.text = resultado['lon'].toString();
+                                      _latController.text = resultado['lat']
+                                          .toString();
+                                      _lonController.text = resultado['lon']
+                                          .toString();
                                     });
                                   }
                                 } catch (e) {
@@ -122,7 +130,9 @@ class _CadastroLugarState extends State<CadastroLugar> {
                       child: TextFormField(
                         controller: _latController,
                         readOnly: true,
-                        decoration: const InputDecoration(labelText: 'Latitude'),
+                        decoration: const InputDecoration(
+                          labelText: 'Latitude',
+                        ),
                       ),
                     ),
                     const SizedBox(width: 16),
@@ -130,7 +140,25 @@ class _CadastroLugarState extends State<CadastroLugar> {
                       child: TextFormField(
                         controller: _lonController,
                         readOnly: true,
-                        decoration: const InputDecoration(labelText: 'Longitude'),
+                        decoration: const InputDecoration(
+                          labelText: 'Longitude',
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 16),
+                Column(
+                  children: [
+                    ElevatedButton.icon(
+                      onPressed: () => _salvarTudo,
+                      icon: const Icon(Icons.save),
+                      label: const Text('Salvar Local'),
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: const Size.fromHeight(
+                          50,
+                        ), // Botão maior e consistente
+                        textStyle: const TextStyle(fontSize: 18),
                       ),
                     ),
                   ],
