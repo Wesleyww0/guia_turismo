@@ -7,8 +7,12 @@ class MapaController extends ChangeNotifier {
   final MapaService _servico = MapaService();
 
   LatLng? atual;
+  LatLng? destinoSelecionado;
+  String? nomeDestinoSelecionado;
   List<LatLng> pontosNoMapa = [];
+  List<LatLng> rotaAtual = [];
   bool carregando = false;
+  bool carregandoRota = false;
   String erro = "";
 
   final MapController mapControllerNativo = MapController();
@@ -29,6 +33,9 @@ class MapaController extends ChangeNotifier {
         if (!pontosNoMapa.contains(atual!)) {
           pontosNoMapa.add(atual!);
         }
+        try {
+          mapControllerNativo.move(atual!, 15.0);
+        } catch (_) {}
       }
     } catch (e) {
       erro = e.toString();
@@ -37,6 +44,28 @@ class MapaController extends ChangeNotifier {
       carregando = false;
       notifyListeners();
     }
+  }
+
+  Future<void> tracarRota(LatLng destino, {String? nomeDestino}) async {
+    if (atual == null) return;
+    destinoSelecionado = destino;
+    nomeDestinoSelecionado = nomeDestino;
+    carregandoRota = true;
+    notifyListeners();
+
+    try {
+      rotaAtual = await _servico.buscarRota(atual!, destino);
+    } finally {
+      carregandoRota = false;
+      notifyListeners();
+    }
+  }
+
+  void limparRota() {
+    rotaAtual = [];
+    destinoSelecionado = null;
+    nomeDestinoSelecionado = null;
+    notifyListeners();
   }
 
   void moverParaDestino(LatLng novaCoordenada) {
