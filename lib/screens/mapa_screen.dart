@@ -13,6 +13,8 @@ class MapaScreen extends StatefulWidget {
 }
 
 class _MapaScreenState extends State<MapaScreen> {
+  String? _lugarSelecionadoNome;
+
   @override
   Widget build(BuildContext context) {
     return Consumer2<MapaController, LugaresController>(
@@ -21,65 +23,116 @@ class _MapaScreenState extends State<MapaScreen> {
           top: true,
           bottom: true,
           child: Column(
-            //Centralização
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              //Se está carregando, mostra o circulo de loading
               mapaController.carregando
                   ? Center(child: CircularProgressIndicator())
-                  //Se não achar/carregar, fala que n foi encontrado
                   : mapaController.atual == null
                   ? Center(child: Text("Não encontrado"))
-                  //Se achar/carregar o mapa
                   : Expanded(
                       child: FlutterMap(
-                        // Vincula o componente visual ao objeto dentro do seu MapaController
                         mapController: mapaController.mapControllerNativo,
                         options: MapOptions(
                           initialZoom: 15,
                           initialCenter: mapaController.atual ?? LatLng(0, 0),
+                          onTap: (_, __) {
+                            if (_lugarSelecionadoNome != null) {
+                              setState(() => _lugarSelecionadoNome = null);
+                            }
+                            mapaController.limparRota();
+                          },
                         ),
                         children: [
                           TileLayer(
                             urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-                            //Informa quem está pedindo para usar o mapa
                             userAgentPackageName: "br.com.guiaturismo.maps",
                             maxNativeZoom: 19,
                           ),
 
-                          /*
-                        Se o lugar não tiver categoria ou tiver coordenadas inválidas
-                        ele não aparece no mapa.
-                      */
+                          // Linha da rota até o lugar selecionado
+                          if (mapaController.rotaAtual.isNotEmpty)
+                            PolylineLayer(
+                              polylines: [
+                                Polyline(
+                                  points: mapaController.rotaAtual,
+                                  strokeWidth: 4.5,
+                                  color: Colors.blueAccent,
+                                ),
+                              ],
+                            ),
 
-                          //Marcador para os lugares salvos
+                          // Marcador para os lugares salvos
                           MarkerLayer(
                             markers: lugaresController.lugares
                                 .map(
-                                  (lugaresSalvos) => Marker(
-                                    alignment: Alignment.center,
-                                    width: 40,
-                                    height: 40,
-                                    rotate: true,
-                                    //lugaresSalvos foi criado nesse Map, e pega os valores de lugares dentro de lugaresController
-                                    point: LatLng(
+                                  (lugaresSalvos) {
+                                    final destino = LatLng(
                                       lugaresSalvos.latitude.toDouble(),
                                       lugaresSalvos.longitude.toDouble(),
-                                    ),
-                                    child: Tooltip(
-                                      message: lugaresSalvos.nome, //Se pressionar o lugar mostra o nome
-                                      child: Icon(
-                                        Icons.place,
-                                        color: Colors.blueAccent,
+                                    );
+                                    return Marker(
+                                      alignment: Alignment.center,
+                                      width: 130,
+                                      height: 64,
+                                      rotate: true,
+                                      point: destino,
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          final selecionando =
+                                              _lugarSelecionadoNome != lugaresSalvos.nome;
+                                          setState(() {
+                                            _lugarSelecionadoNome =
+                                                selecionando ? lugaresSalvos.nome : null;
+                                          });
+                                          if (selecionando) {
+                                            mapaController.tracarRota(destino);
+                                          } else {
+                                            mapaController.limparRota();
+                                          }
+                                        },
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          mainAxisAlignment: MainAxisAlignment.end,
+                                          children: [
+                                            if (_lugarSelecionadoNome == lugaresSalvos.nome)
+                                              Container(
+                                                margin: const EdgeInsets.only(bottom: 4),
+                                                padding: const EdgeInsets.symmetric(
+                                                  horizontal: 8,
+                                                  vertical: 3,
+                                                ),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.black87,
+                                                  borderRadius: BorderRadius.circular(6),
+                                                ),
+                                                child: Text(
+                                                  lugaresSalvos.nome,
+                                                  maxLines: 1,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 11,
+                                                  ),
+                                                ),
+                                              ),
+                                            Tooltip(
+                                              message: lugaresSalvos.nome,
+                                              child: Icon(
+                                                Icons.place,
+                                                color: Colors.blueAccent,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  ),
+                                    );
+                                  },
                                 )
                                 .toList(),
                           ),
 
-                          //Criado durante a aula
+                          // Criado durante a aula
                           MarkerLayer(
                             markers: mapaController.pontosNoMapa
                                 .map(
@@ -101,7 +154,6 @@ class _MapaScreenState extends State<MapaScreen> {
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          //Centraliza a posição do usuário no mapa
           onPressed: () => mapaController.buscarLocal(),
           child: Icon(Icons.person_pin_circle_rounded),
         ),

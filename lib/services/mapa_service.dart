@@ -1,35 +1,55 @@
-
+import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 
 class MapaService {
   Future<LatLng?> obterLocal() async {
-    //Verifica se o serviço de localização está ativo
     bool ativo = await Geolocator.isLocationServiceEnabled();
-
     if (!ativo) return null;
-    //Vendo se temos permissão para acessar a localização
-    LocationPermission permissao = await Geolocator.checkPermission();
 
-    //Se não tiver, peça
-    if (permissao == LocationPermission.denied){
+    LocationPermission permissao = await Geolocator.checkPermission();
+    if (permissao == LocationPermission.denied) {
       permissao = await Geolocator.requestPermission();
     }
-    
-    //Se o usuário bloqueou total a permissão, então deixa quieto
     if (permissao == LocationPermission.deniedForever) return null;
 
-    Position posicao;
-
     try {
-      //Tenta pegar a posição do usuário, se der bom, pega a latitude e longitude, se não, retorna erro no console
-      posicao = await Geolocator.getCurrentPosition();
+      Position posicao = await Geolocator.getCurrentPosition();
       return LatLng(posicao.latitude, posicao.longitude);
     } catch (erro) {
       debugPrint("Erro ao obter posição: $erro");
       return null;
-    } 
+    }
+  }
 
+  Future<List<LatLng>> buscarRota(LatLng origem, LatLng destino) async {
+    try {
+      final url = Uri.parse(
+        'https://router.project-osrm.org/route/v1/driving/'
+        '${origem.longitude},${origem.latitude};'
+        '${destino.longitude},${destino.latitude}'
+        '?overview=full&geometries=geojson',
+      );
+
+      final resposta = await http.get(url);
+      if (resposta.statusCode != 200) return [];
+
+      final dados = jsonDecode(resposta.body);
+      final List routes = dados['routes'] ?? [];
+      if (routes.isEmpty) return [];
+
+      final List coordenadas = routes[0]['geometry']['coordinates'];
+      return coordenadas
+          .map((coord) => LatLng(
+                (coord[1] as num).toDouble(),
+                (coord[0] as num).toDouble(),
+              ))
+          .toList();
+    } catch (e) {
+      debugPrint("Erro ao buscar rota: $e");
+      return [];
+    }
   }
 }

@@ -44,14 +44,20 @@ class SessionService {
     return prefs.getString('token');
   }
 
-  Future<void> logout() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('token');
-  }
+   Future<void> logout() async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.remove('token');
+  await prefs.remove('nome');
+  await prefs.remove('email');
+  nome = '';
+  email = '';
+}
 
   Future<void> salvarUsuario(Map user) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('email', user['email']);
     await prefs.setString('nome', user['nome']);
   }
+
+ 
 }
